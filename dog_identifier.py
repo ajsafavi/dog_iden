@@ -25,13 +25,17 @@ def arguments():
   import argparse
   parser = argparse.ArgumentParser()
   #size that images are rescaled to
-  parser.add_argument('-s', '--size', type=int, default=100)
+  parser.add_argument('-is', '--im_size', type=int, default=100)
   parser.add_argument('-ld', '--load_data',type=bool, default=False)
   parser.add_argument('-pick', '--pickle_data',type=bool, default=False)
   #0 means use all avalible data
   parser.add_argument('-trs', '--train_size',type=int, default=0)
   parser.add_argument('-tss', '--test_size',type=int, default=0)
+  #max epochs
+  parser.add_argument('-eps', '--epochs',type=int, default=1)
 
+  parser.add_argument('-sm', '--save_model',type=bool, default=False)
+  parser.add_argument('-lm', '--load_model', type=bool, default=False)
 
   return parser.parse_args()
 
@@ -128,7 +132,13 @@ def main():
 
 
       # train model until cvonvergence or some fixed number of epochs
-    model.fit(x_train, y_train, epochs=1, validation_data=(x_valid, y_valid), verbose=1)
+    if(not args.load_model):
+    	model.fit(x_train, y_train, epochs=args.epochs, validation_data=(x_valid, y_valid), verbose=1)
+    else:
+    	model = load_model('dog_model.h5')
+
+   	if(args.save_model):
+   		model.save('dog_model.h5')
 
       #get predictions
     preds = model.predict(x_test, verbose=1)
