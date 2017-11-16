@@ -51,7 +51,7 @@ def process_data(args):
         print "data unpickled"
         return x_train,x_valid,x_test,y_train,y_valid
  
-    im_size = args.size
+    im_size = args.im_size
     train_size = args.train_size
     test_size = args.test_size
     x_train = []
@@ -99,7 +99,7 @@ def process_data(args):
     return x_train,x_valid,x_test,y_train,y_valid,one_hot,df_test
 
 def create_model(args):
-    im_size = args.size
+    im_size = args.im_size
     base_model = VGG19(weights = None, include_top=False, input_shape=(im_size, im_size, 3))
 
     # Add a new top layer
