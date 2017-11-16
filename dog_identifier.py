@@ -92,7 +92,7 @@ def process_data(args):
 	    pickle.dump( y_train, open( "pick/y_train.p", "wb" ))
 	    pickle.dump( y_valid, open( "pick/y_valid.p", "wb" ))
 
-    return x_train,x_valid,x_test,y_train,y_valid
+    return x_train,x_valid,x_test,y_train,y_valid,one_hot
 
 def create_model(args):
     im_size = args.size
@@ -121,14 +121,14 @@ def create_model(args):
 def main():
     args = arguments()
       #get data
-    x_train,x_valid,x_test,y_train,y_valid = process_data(args)
+    x_train,x_valid,x_test,y_train,y_valid,one_hot = process_data(args)
 
       # define model
     model = create_model(args)
 
 
       # train model until cvonvergence or some fixed number of epochs
-    model.fit(x_train, y_train, epochs=2, validation_data=(x_valid, y_valid), verbose=1)
+    model.fit(x_train, y_train, epochs=1, validation_data=(x_valid, y_valid), verbose=1)
 
       #get predictions
     preds = model.predict(x_test, verbose=1)
