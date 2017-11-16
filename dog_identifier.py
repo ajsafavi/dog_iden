@@ -42,7 +42,7 @@ def arguments():
 def process_data(args):
     """get the data labelled and resized for training"""
     if(args.load_data):
-    	print "unpickling data..."
+        print "unpickling data..."
         x_train = pickle.load( open( "pick/x_train.p", "rb" ) )
         x_valid = pickle.load( open( "pick/x_valid.p", "rb" ) )
         x_test = pickle.load( open( "pick/x_test.p", "rb" ) )
@@ -72,14 +72,14 @@ def process_data(args):
         y_train.append(label)
         i += 1
         if i == train_size:
-        	break
+            break
     t = 0
     for f in tqdm(df_test['id'].values):
         img = cv2.imread('test/{}.jpg'.format(f))
         x_test.append(cv2.resize(img, (im_size, im_size)))
         t += 1
         if t == test_size:
-        	break
+            break
 
     y_train_raw = np.array(y_train, np.uint8)
     x_train_raw = np.array(x_train, np.float32) / 255.
@@ -90,11 +90,11 @@ def process_data(args):
 
     #pickle the data
     if args.pickle_data:
-	    pickle.dump(x_train, open( "pick/x_train.p", "wb" ))
-	    pickle.dump( x_valid, open( "pick/x_valid.p", "wb" ))
-	    pickle.dump( x_test, open( "pick/x_test.p", "wb" ))
-	    pickle.dump( y_train, open( "pick/y_train.p", "wb" ))
-	    pickle.dump( y_valid, open( "pick/y_valid.p", "wb" ))
+        pickle.dump(x_train, open( "pick/x_train.p", "wb" ))
+        pickle.dump( x_valid, open( "pick/x_valid.p", "wb" ))
+        pickle.dump( x_test, open( "pick/x_test.p", "wb" ))
+        pickle.dump( y_train, open( "pick/y_train.p", "wb" ))
+        pickle.dump( y_valid, open( "pick/y_valid.p", "wb" ))
 
     return x_train,x_valid,x_test,y_train,y_valid,one_hot,df_test
 
@@ -133,12 +133,12 @@ def main():
 
       # train model until cvonvergence or some fixed number of epochs
     if(not args.load_model):
-    	model.fit(x_train, y_train, epochs=args.epochs, validation_data=(x_valid, y_valid), verbose=1)
+        model.fit(x_train, y_train, epochs=args.epochs, validation_data=(x_valid, y_valid), verbose=1)
     else:
-    	model = load_model('dog_model.h5')
+        model = load_model('dog_model.h5')
 
-   	if(args.save_model):
-   		model.save('dog_model.h5')
+    if(args.save_model):
+           model.save('dog_model.h5')
 
       #get predictions
     preds = model.predict(x_test, verbose=1)
