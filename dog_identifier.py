@@ -86,9 +86,9 @@ def process_data(args):
     x_test  = np.array(x_test, np.float32)
     x_train /= 255.
     x_test /= 255.
+    NUM_CLASS = y_train.shape[1]
 
     x_train, x_valid, y_train, y_valid = train_test_split(x_train, y_train, test_size=0.2, random_state=1)
-    NUM_CLASS = y_train_raw.shape[1]
 
     #pickle the data
     if args.pickle_data:
