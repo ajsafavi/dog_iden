@@ -87,7 +87,7 @@ def process_data(args):
     x_train /= 255.
     x_test /= 255.
 
-    x_train, x_valid, y_train, y_valid = train_test_split(x_train_raw, y_train_raw, test_size=0.2, random_state=1)
+    x_train, x_valid, y_train, y_valid = train_test_split(x_train, y_train, test_size=0.2, random_state=1)
     NUM_CLASS = y_train_raw.shape[1]
 
     #pickle the data
