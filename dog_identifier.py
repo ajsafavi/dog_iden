@@ -8,6 +8,7 @@ import keras
 from keras.applications.vgg19 import VGG19
 from keras.models import Model
 from keras.layers import Dense, Dropout, Flatten
+from keras.models import load_model
 
 import os
 from tqdm import tqdm
