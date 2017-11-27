@@ -37,7 +37,8 @@ def arguments():
 
   parser.add_argument('-sm', '--save_model',type=bool, default=False)
   parser.add_argument('-lm', '--load_model', type=bool, default=False)
-  parser.add_argument('-tm', '--train_model', type=bool, default=False)
+  parser.add_argument('-tm', '--train_model', type=bool, default=False) 
+  #note this is additional training only if you load
 
   return parser.parse_args()
 
@@ -140,7 +141,7 @@ def main():
         model.fit(x_train, y_train, epochs=args.epochs, validation_data=(x_valid, y_valid), verbose=1)
     else:
         model = load_model('dog_model.h5')
-        if(parser.train_model):
+        if(args.train_model):
             model.fit(x_train, y_train, epochs=args.epochs, validation_data=(x_valid, y_valid), verbose=1)
 
     if(args.save_model):
