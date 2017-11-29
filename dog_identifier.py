@@ -6,6 +6,7 @@ import pandas as pd
 
 import keras
 from keras.applications.vgg19 import VGG19
+from keras.applications.vgg16 import VGG16
 from keras.models import Model
 from keras.layers import Dense, Dropout, Flatten
 from keras.models import load_model
@@ -35,10 +36,13 @@ def arguments():
   #max epochs
   parser.add_argument('-eps', '--epochs',type=int, default=1)
 
-  parser.add_argument('-sm', '--save_model',type=bool, default=False)
-  parser.add_argument('-lm', '--load_model', type=bool, default=False)
+  parser.add_argument('-sm', '--save_model',type=str)
+  parser.add_argument('-lm', '--load_model', type=str)
   parser.add_argument('-tm', '--train_model', type=bool, default=False) 
   #note this is additional training only if you load
+
+  parser.add_argument('-mt', '--model_type', type=str, default="VGG19")
+  parser.add_argument('-pr', '--predictions', type=str, default="Predictions.csv")
 
   return parser.parse_args()
 
@@ -105,8 +109,12 @@ def process_data(args):
 
 def create_model(args):
     im_size = args.im_size
-    base_model = VGG19(weights = None, include_top=False, input_shape=(im_size, im_size, 3))
-
+    if(args.model_type == "VGG19"):
+    	print "using VGG19"
+        base_model = VGG19(weights = None, include_top=False, input_shape=(im_size, im_size, 3))
+    if(args.model_type == "VGG16"):
+    	print "using VGG16"
+        base_model = VGG16(weights = None, include_top=False, input_shape=(im_size, im_size, 3))
     # Add a new top layer
     x = base_model.output
     x = Flatten()(x)
@@ -134,18 +142,16 @@ def main():
 
       # define model
     model = create_model(args)
-
-
       # train model until cvonvergence or some fixed number of epochs
     if(not args.load_model):
         model.fit(x_train, y_train, epochs=args.epochs, validation_data=(x_valid, y_valid), verbose=1)
     else:
-        model = load_model('dog_model.h5')
+        model = load_model(args.load_model)
         if(args.train_model):
             model.fit(x_train, y_train, epochs=args.epochs, validation_data=(x_valid, y_valid), verbose=1)
 
     if(args.save_model):
-           model.save('dog_model.h5')
+           model.save(args.save_model)
 
       #get predictions
     preds = model.predict(x_test, verbose=1)
@@ -155,7 +161,8 @@ def main():
     sub.columns = col_names
 
     sub.insert(0, 'id', sample_df['id'])
-    sub.to_csv("predictions.csv",index=False)
+    sub.to_csv(args.predictions,index=False)
+    print "saved predictions as " + args.predictions;
 
 if __name__ == '__main__':
   main()

@@ -1,0 +1,7 @@
+#train the big bad boy VGG19
+python2.7 dog_identifier.py -is 150 -eps 20 -sm "dog_model_update.h5" -lm "dog_model.h5" -tm True -mt "VGG19"
+
+#test VGG16 cause no one aint got time for that
+python2.7 dog_identifier.py -is 150 -trs 100 -tss 100 -eps 1 -sm "model_VGG16.h5" -tm True -mt "VGG16"
+
+python2.7 dog_identifier.py -is 150 -eps 100 -sm "model_v1_VGG16.h5" -tm True -mt "VGG16" -pr "VGG16_preds.csv"
